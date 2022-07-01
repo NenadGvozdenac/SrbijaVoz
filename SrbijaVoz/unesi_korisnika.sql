@@ -1,0 +1,1 @@
+INSERT INTO srbijavoz.korisnik VALUES (4, "testiranje1@gmail.com", "12345", "korisnik")
