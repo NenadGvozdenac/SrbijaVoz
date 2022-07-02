@@ -6,9 +6,9 @@ Pocetni ekran za login. Login povezan sa DB gde se cuvaju podaci.
 Provera login-a uvek. Dodavanje novih korisnika, itd.
 
 # Glavni ekran
-Kupovina karata
-Brisanje karata
-Listanje karata
+Kupovina karata\n
+Brisanje karata\n
+Listanje karata\n
 Listanje ruta za kupovinu karata
 
 # Admin
