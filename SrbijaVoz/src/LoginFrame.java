@@ -5,12 +5,14 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,8 +27,10 @@ public class LoginFrame extends JFrame {
 	LoginFrame(String naziv) {
 		this.setTitle(naziv);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setAlwaysOnTop(true);
+		this.setAlwaysOnTop(false);
 		this.setResizable(false);
+		
+		this.setIconImage(new ImageIcon("./slike//srbija.png").getImage());
 		
 		this.setLayout(new BorderLayout());
 		this.setSize(new Dimension(700, 500));
@@ -95,7 +99,6 @@ public class LoginFrame extends JFrame {
 		panelCentar.setName("panelCentar");
 		
 		JPanel panelSredinaLogovanje = new JPanel();
-		panelSredinaLogovanje.setBackground(Color.DARK_GRAY);
 		FlowLayout layout = new FlowLayout();
 		layout.setVgap(10);
 		panelSredinaLogovanje.setLayout(layout);
@@ -107,8 +110,14 @@ public class LoginFrame extends JFrame {
 		panelSredinaLogovanje.add(area2);
 		panelSredinaLogovanje.add(dugme);
 		
-		panelCentar.add(panelSredinaLogovanje);
+		panelSredinaLogovanje.setOpaque(false);
 		
+		JLabel labelBackground = new JLabel(new ImageIcon(new ImageIcon("./slike//slika1.jpg").getImage().getScaledInstance(panelCentar.getSize().width, panelCentar.getSize().height, Image.SCALE_SMOOTH)));
+		labelBackground.setSize(panelCentar.getSize().width, panelCentar.getSize().height);
+		
+		panelCentar.add(panelSredinaLogovanje);
+		panelCentar.add(labelBackground);
+	
 		panelGornji.add(label1);
 		panelDonji.add(label2);
 		
@@ -121,11 +130,18 @@ public class LoginFrame extends JFrame {
 	
 	public void PROVERI_LOGIN_INFORMACIJE(String korisnickoIme, String korisnickaSifra) throws SQLException {
 		
+		
 		BazaPodataka.Korisnik korisnik = BazaPodataka.PROVERI_LOGIN(korisnickoIme, korisnickaSifra);
 		
 		// vraca false ukoliko nema greske, true ako ima
 		
 		this.setVisible(false);
+		
+		if(korisnickoIme.isEmpty() || korisnickoIme.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Greska! Upisite podatke!\n", "GRESKA", JOptionPane.WARNING_MESSAGE | JOptionPane.OK_OPTION);
+			this.setVisible(true);
+			return;
+		}
 		
 		if(korisnik == null) {
 			JOptionPane.showMessageDialog(null, "Greska! Pogresne informacije!\n", "GRESKA", JOptionPane.WARNING_MESSAGE | JOptionPane.OK_OPTION);
@@ -154,7 +170,7 @@ public class LoginFrame extends JFrame {
 			JOptionPane.showMessageDialog(null, "Uspesno ste ulogovani!\n", "USPEH", JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE);
 			this.dispose();
 			
-			MainWindow.instanceFrame(new MainWindow(korisnik));
+			new MainWindow(korisnik);
 			
 			return;
 		}
