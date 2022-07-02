@@ -27,4 +27,4 @@ Prekopirano sa srbvoz.rs
 # Credits
 srbvoz.rs inspiracija, koriste se podaci sa tog sajta
 
-![srbija](https://user-images.githubusercontent.com/32616777/177009752-9e7faa0d-cce8-437a-92ca-94f38692ca0b.png)
+![image](https://user-images.githubusercontent.com/32616777/177009752-9e7faa0d-cce8-437a-92ca-94f38692ca0b.png)
