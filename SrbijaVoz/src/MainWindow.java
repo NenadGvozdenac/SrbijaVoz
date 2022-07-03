@@ -9,6 +9,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -21,12 +22,14 @@ public class MainWindow extends JFrame implements ActionListener {
 	
 	private static final long serialVersionUID = 6732424917803935806L;
 	
-	public static JPanel panelGornji, panelDonji, panelCentar;
+	public static JPanel panelGornji, panelDonji, panelCentar, panel1;
 	public static JPanel panelInformacije;
 	
 	public enum URGENTNOST {OBICNA_PORUKA, VAZNA_PORUKA, OBAVESTENJE};
+	public BazaPodataka.Korisnik KORISNIK;
 	
 	MainWindow(BazaPodataka.Korisnik korisnik) {
+		this.KORISNIK = korisnik;
 		this.setTitle("Srbija Voz");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setAlwaysOnTop(false);
@@ -118,7 +121,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		label3.setBorder(BorderFactory.createLineBorder(Color.black));
 		label3.setHorizontalAlignment(JLabel.CENTER);
 		
-		JPanel panel1 = new JPanel();
+		panel1 = new JPanel();
 		
 		panel1.setLayout(new GridLayout(8, 1));
 		panel1.setLocation(new Point(panelCentar.getSize().width / 2 - 1, 0));
@@ -143,10 +146,17 @@ public class MainWindow extends JFrame implements ActionListener {
 		panelCentar.add(panel1);
 		panelCentar.add(panel2);
 		
-		DODAJ_OBAVESTENJE(panel1, "Srbija Voz krece sa radom dana 02.07.2022!", URGENTNOST.OBAVESTENJE);
-		DODAJ_OBAVESTENJE(panel1, "Prvi voz koji krece je voz Sombor - Novi Sad!!", URGENTNOST.OBICNA_PORUKA);
-		DODAJ_OBAVESTENJE(panel1, "Zastajanje voza Sombor - Novi Sad u Gajdobri!", URGENTNOST.VAZNA_PORUKA);
-		DODAJ_OBAVESTENJE(panel1, "Voz ce krenuti dana 03.07.2022!", URGENTNOST.OBICNA_PORUKA);
+		List<BazaPodataka.Obavestenje> iscitajObavestenja = BazaPodataka.ISPISI_OBAVESTENJA();
+		
+		for(BazaPodataka.Obavestenje s : iscitajObavestenja) {
+			if(s.urgentnost.equals("obicnaporuka")) {
+				DODAJ_OBAVESTENJE(s.obavestenje, URGENTNOST.OBICNA_PORUKA);
+			} else if(s.urgentnost.equals("vaznaporuka")) {
+				DODAJ_OBAVESTENJE(s.obavestenje, URGENTNOST.VAZNA_PORUKA);
+			} else if(s.urgentnost.equals("obavestenje")) {
+				DODAJ_OBAVESTENJE(s.obavestenje, URGENTNOST.OBAVESTENJE);
+			}
+		}
 		
 		JButton kupiKarte = napraviDugme("Kupi Karte"), listajKarte = napraviDugme("Listaj Karte"), brisiKarte = napraviDugme("Brisi Karte"), listajRute = napraviDugme("Listaj Rute");
 		
@@ -178,7 +188,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		panelCentar.add(panel3);
 	}
 
-	public void DODAJ_OBAVESTENJE(JPanel panel1, String obavestenje, URGENTNOST urgentnost) {
+	public static void DODAJ_OBAVESTENJE(String obavestenje, URGENTNOST urgentnost) {
 		
 		int brojac = 0;
 		
@@ -271,6 +281,10 @@ public class MainWindow extends JFrame implements ActionListener {
 		panel.add(panel1);
 	}
 
+	public void ukljuciProzor() {
+		this.setEnabled(true);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
@@ -300,7 +314,7 @@ public class MainWindow extends JFrame implements ActionListener {
 				
 				case "Dodaj Obavestenje":
 					this.dispose();
-					new DodajObavestenjeFrame();
+					new DodajObavestenjeFrame(KORISNIK);
 				break;
 				
 				case "Dodaj Voznu Rutu":

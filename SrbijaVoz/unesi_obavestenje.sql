@@ -1,0 +1,1 @@
+INSERT INTO srbijavoz.obavestenja (obavestenje, urgentnost) VALUES ("Dobar dan 3", "obavestenje");

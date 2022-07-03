@@ -26,6 +26,16 @@ public class BazaPodataka {
 		}
 	}
 	
+	public static class Obavestenje {
+		public String obavestenje;
+		public String urgentnost;
+		
+		Obavestenje(String a, String b) {
+			this.obavestenje = a;
+			this.urgentnost = b;
+		}
+	}
+	
 	public enum POZICIJA {ADMIN, KORISNIK};
 	
 	public static Boolean UPISI_KORISNIKA(String korisnicko_ime, String korisnicka_sifra, POZICIJA pozicija) {
@@ -143,5 +153,60 @@ public class BazaPodataka {
 		}
 		
 		return null;
+	}
+	
+	public static void UPISI_OBAVESTENJE(String obavestenje, String urgentnost) {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		
+		Statement statement = null;
+		
+		try {
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "gvozdenacnenad");
+			
+			statement = connection.createStatement();
+			
+			statement.execute("INSERT INTO srbijavoz.obavestenja (obavestenje, urgentnost) VALUES (\"" + obavestenje + "\", \"" + urgentnost + "\")");
+		
+			statement.close();
+			connection.close();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Greska pri unosu obavestenja!", "GRESKA", JOptionPane.WARNING_MESSAGE | JOptionPane.OK_CANCEL_OPTION);
+		}
+	}
+	
+	public static List<Obavestenje> ISPISI_OBAVESTENJA() {
+		
+		List<Obavestenje> obavestenja = new ArrayList<Obavestenje>();
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		
+		try {
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "gvozdenacnenad");
+			
+			Statement statement = connection.createStatement();
+			
+			ResultSet select_query = statement.executeQuery("SELECT * FROM srbijavoz.obavestenja");
+			
+			while(select_query.next()) {
+				obavestenja.add(new Obavestenje(select_query.getString(2), select_query.getString(3)));
+			}
+			
+			statement.close();
+			connection.close();
+			
+			return obavestenja;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
