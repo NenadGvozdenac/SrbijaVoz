@@ -1,7 +1,5 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -20,34 +18,31 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class LoginFrame extends JFrame {
+public class LoginFrame extends JFrame implements ActionListener {
 	
 	private static final long serialVersionUID = -2962760868419309808L;
 
+	public JTextField area1, area2;
+	public JButton dugme, dugme1;
+	public JPanel panelGornji, panelDonji, panelCentar, panelSredinaLogovanje;
+	
 	LoginFrame(String naziv) {
 		this.setTitle(naziv);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setAlwaysOnTop(false);
 		this.setResizable(false);
-		
 		this.setIconImage(new ImageIcon("./slike//srbija.png").getImage());
-		
 		this.setLayout(new BorderLayout());
 		this.setSize(new Dimension(700, 500));
-		
 		this.setLocationRelativeTo(null);
 		
-		JTextField area1 = new JTextField("Korisnicko ime");
+		area1 = new HiddenTextField("Korisnicko ime");
 		area1.setPreferredSize(new Dimension(350, 30));
-		area1.setForeground(Color.black);
-		area1.setFont(new Font("Times New Roman", Font.PLAIN, 24));
 		
-		JTextField area2 = new JTextField("Korisnicka sifra");
+		area2 = new HiddenTextField("Korisnicka sifra");
 		area2.setPreferredSize(new Dimension(350, 30));
-		area2.setForeground(Color.black);
-		area2.setFont(new Font("Times New Roman", Font.PLAIN, 24));
 		
-		JButton dugme = new JButton("POTVRDA");
+		dugme = new JButton("POTVRDA");
 		dugme.setPreferredSize(new Dimension(100, 50));
 		dugme.setBackground(Color.white);
 		dugme.setForeground(Color.black);
@@ -55,20 +50,17 @@ public class LoginFrame extends JFrame {
 		dugme.setVerticalAlignment(JButton.CENTER);
 		dugme.setFont(new Font("Times New Roman", Font.BOLD, 12));
 		dugme.setFocusable(false);
+		dugme.addActionListener(this);
 		
-		dugme.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String korisnickoIme = area1.getText();
-				String korisnickaSifra = area2.getText();
-				try {
-					PROVERI_LOGIN_INFORMACIJE(korisnickoIme, korisnickaSifra);
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
+		dugme1 = new JButton("REGISTRACIJA");
+		dugme1.setPreferredSize(new Dimension(125, 50));
+		dugme1.setBackground(Color.white);
+		dugme1.setForeground(Color.black);
+		dugme1.setHorizontalAlignment(JButton.CENTER);
+		dugme1.setVerticalAlignment(JButton.CENTER);
+		dugme1.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		dugme1.setFocusable(false);
+		dugme1.addActionListener(this);
 		
 		JLabel label1 = new JLabel("Dobrodosli u Srbija voz!");
 		label1.setFont(new Font("Times New Roman", Font.BOLD, 20));
@@ -76,29 +68,27 @@ public class LoginFrame extends JFrame {
 		JLabel label2 = new JLabel("Hvala sto koristite Srbija voz!");
 		label2.setFont(new Font("Times New Roman", Font.BOLD, 15));
 		
-		JPanel panelGornji = new JPanel();
-		
-		panelGornji.setBorder(BorderFactory.createLineBorder(Color.black));
+		panelGornji = new JPanel();
+		panelGornji.setBorder(BorderFactory.createLineBorder(Color.white));
 		panelGornji.setBackground(Color.LIGHT_GRAY);
 		panelGornji.setPreferredSize(new Dimension(100, 40));
 		panelGornji.setLayout(new FlowLayout(FlowLayout.CENTER));
 		panelGornji.setName("panelGornji");
 		
-		JPanel panelDonji = new JPanel();
-		
-		panelDonji.setBorder(BorderFactory.createLineBorder(Color.black));
+		panelDonji = new JPanel();
+		panelDonji.setBorder(BorderFactory.createLineBorder(Color.white));
 		panelDonji.setBackground(Color.LIGHT_GRAY);
 		panelDonji.setPreferredSize(new Dimension(100, 30));
 		panelDonji.setName("panelDonji");
 		
-		JPanel panelCentar = new JPanel();
-		panelCentar.setBorder(BorderFactory.createLineBorder(Color.black));
+		panelCentar = new JPanel();
+		panelCentar.setBorder(BorderFactory.createLineBorder(Color.white));
 		panelCentar.setBackground(Color.DARK_GRAY);
 		panelCentar.setLayout(null);
 		panelCentar.setSize(this.getSize().width, this.getSize().height - panelGornji.getPreferredSize().height - panelGornji.getPreferredSize().height - 10);
 		panelCentar.setName("panelCentar");
 		
-		JPanel panelSredinaLogovanje = new JPanel();
+		panelSredinaLogovanje = new JPanel();
 		FlowLayout layout = new FlowLayout();
 		layout.setVgap(10);
 		panelSredinaLogovanje.setLayout(layout);
@@ -109,6 +99,7 @@ public class LoginFrame extends JFrame {
 		panelSredinaLogovanje.add(area1);
 		panelSredinaLogovanje.add(area2);
 		panelSredinaLogovanje.add(dugme);
+		panelSredinaLogovanje.add(dugme1);
 		
 		panelSredinaLogovanje.setOpaque(false);
 		
@@ -125,11 +116,11 @@ public class LoginFrame extends JFrame {
 		this.getContentPane().add(panelDonji, BorderLayout.SOUTH);
 		this.getContentPane().add(panelCentar, BorderLayout.CENTER);
 		
+		
 		this.setVisible(true);
 	}
 	
 	public void PROVERI_LOGIN_INFORMACIJE(String korisnickoIme, String korisnickaSifra) throws SQLException {
-		
 		
 		BazaPodataka.Korisnik korisnik = BazaPodataka.PROVERI_LOGIN(korisnickoIme, korisnickaSifra);
 		
@@ -147,23 +138,8 @@ public class LoginFrame extends JFrame {
 			JOptionPane.showMessageDialog(null, "Greska! Pogresne informacije!\n", "GRESKA", JOptionPane.WARNING_MESSAGE | JOptionPane.OK_OPTION);
 			this.setVisible(true);
 			
-			for(Component c : this.getContentPane().getComponents()) {
-				if(c instanceof JPanel) {
-					if(c.getName().equals("panelCentar")) {
-						for(Component k : ((Container) c).getComponents()) {
-							if(k instanceof JPanel) {
-								if(k.getName().equals("panelSredinaLogovanje")) {
-									for(Component j : ((Container) k).getComponents()) {
-										if(j instanceof JTextField) {
-											((JTextField) j).setText("");
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+			area1.setText("Korisnicko ime");
+			area2.setText("Korisnicka sifra");
 			
 			return;
 		} else {
@@ -173,6 +149,41 @@ public class LoginFrame extends JFrame {
 			new MainWindow(korisnik);
 			
 			return;
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() instanceof JButton) {
+			
+			JButton dugme = (JButton) e.getSource();
+			
+			if(dugme.equals(this.dugme)) {
+				
+				String korisnickoIme = area1.getText();
+				String korisnickaSifra = area2.getText();
+				try {
+					PROVERI_LOGIN_INFORMACIJE(korisnickoIme, korisnickaSifra);
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				
+			} else if(dugme.equals(this.dugme1)) {
+				
+				String korisnickoIme = area1.getText();
+				String korisnickaSifra = area2.getText();
+				
+				Boolean rezultat = BazaPodataka.UPISI_KORISNIKA(korisnickoIme, korisnickaSifra, BazaPodataka.POZICIJA.KORISNIK);;
+				if(rezultat == false) {
+					JOptionPane.showMessageDialog(null, "Greska pri unosu!", "GRESKA", JOptionPane.WARNING_MESSAGE | JOptionPane.OK_OPTION);
+					area1.setText("Korisnicko ime");
+					area2.setText("Korisnicka sifra");
+				} else {
+					JOptionPane.showMessageDialog(null, "Uspesan unos!", "USPEH", JOptionPane.INFORMATION_MESSAGE | JOptionPane.OK_OPTION);
+					this.dispose();
+					new MainWindow(new BazaPodataka.Korisnik(korisnickoIme, korisnickaSifra, "korisnik"));
+				}
+			}
 		}
 	}
 }

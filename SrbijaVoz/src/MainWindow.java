@@ -17,12 +17,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class MainWindow extends JFrame {
+public class MainWindow extends JFrame implements ActionListener {
 	
 	private static final long serialVersionUID = 6732424917803935806L;
 	
 	public static JPanel panelGornji, panelDonji, panelCentar;
-
 	public static JPanel panelInformacije;
 	
 	public enum URGENTNOST {OBICNA_PORUKA, VAZNA_PORUKA, OBAVESTENJE};
@@ -57,7 +56,7 @@ public class MainWindow extends JFrame {
 		
 		panelGornji = new JPanel();
 		
-		panelGornji.setBorder(BorderFactory.createLineBorder(Color.black));
+		panelGornji.setBorder(BorderFactory.createLineBorder(Color.white));
 		panelGornji.setBackground(Color.LIGHT_GRAY);
 		panelGornji.setPreferredSize(new Dimension(300, 40));
 		panelGornji.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -65,7 +64,7 @@ public class MainWindow extends JFrame {
 		
 		panelDonji = new JPanel();
 		
-		panelDonji.setBorder(BorderFactory.createLineBorder(Color.black));
+		panelDonji.setBorder(BorderFactory.createLineBorder(Color.white));
 		panelDonji.setBackground(Color.LIGHT_GRAY);
 		panelDonji.setPreferredSize(new Dimension(100, 30));
 		panelDonji.setName("panelDonji");
@@ -236,7 +235,7 @@ public class MainWindow extends JFrame {
 		panel1.add(label);
 	}
 	
-	public static JButton napraviDugme(String tekst) {
+	public JButton napraviDugme(String tekst) {
 		JButton dugme = new JButton(tekst);
 		
 		dugme.setPreferredSize(new Dimension(100, 30));
@@ -249,21 +248,12 @@ public class MainWindow extends JFrame {
 		
 		dugme.setName(tekst);
 		
-		dugme.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String naziv = ((JButton)e.getSource()).getName();
-				
-				System.out.println(naziv);
-			}
-			
-		});
+		dugme.addActionListener(this);
 		
 		return dugme;
 	}
 	
-	public static void DODAJ_ADMIN_DUGMAD(JPanel panel) {
+	public void DODAJ_ADMIN_DUGMAD(JPanel panel) {
 		JPanel panel1 = new JPanel();
 		
 		panel1.setSize(new Dimension(220, 100));
@@ -279,5 +269,46 @@ public class MainWindow extends JFrame {
 		panel1.add(dodajObavestenja);
 		
 		panel.add(panel1);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		if(e.getSource() instanceof JButton) {
+			String naziv = ((JButton)e.getSource()).getName();
+			
+			switch(naziv) {
+				case "Kupi Karte":
+					this.dispose();
+					new KupiKarteFrame();
+				break;
+				
+				case "Brisi Karte":
+					this.dispose();
+					new BrisiKarteFrame();
+				break;
+				
+				case "Listaj Karte":
+					this.dispose();
+					new ListajKarteFrame();
+				break;
+				
+				case "Listaj Rute":
+					this.dispose();
+					new ListajRuteFrame();
+				break;
+				
+				case "Dodaj Obavestenje":
+					this.dispose();
+					new DodajObavestenjeFrame();
+				break;
+				
+				case "Dodaj Voznu Rutu":
+					this.dispose();
+					new DodajVoznuRutuFrame();
+				break;
+			}
+		
+		}
 	}
 }

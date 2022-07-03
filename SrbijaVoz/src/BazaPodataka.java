@@ -10,8 +10,6 @@ import javax.swing.JOptionPane;
 
 public class BazaPodataka {
 	
-	// vraca false ukoliko nema greske, true ako ima
-	
 	public static Connection connection;
 	
 	public static class Korisnik {
@@ -52,6 +50,18 @@ public class BazaPodataka {
 			} else if(pozicija == POZICIJA.KORISNIK) {
 				poz = "korisnik";
 			} else {
+				return false;
+			}
+			
+			if(korisnicko_ime.equals("Korisnicko ime") || korisnicko_ime.equals("")) {
+				statement.close();
+				connection.close();
+				return false;
+			} 
+			
+			if(korisnicka_sifra.equals("Korisnicka sifra") || korisnicka_sifra.equals("")) {
+				statement.close();
+				connection.close();
 				return false;
 			}
 			
