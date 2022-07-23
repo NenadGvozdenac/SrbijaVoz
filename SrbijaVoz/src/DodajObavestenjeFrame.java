@@ -109,7 +109,7 @@ public class DodajObavestenjeFrame extends JFrame implements ActionListener {
 		
 		panelDodajObavestenje.setSize(new Dimension(panelCentar.getSize().width / 3 * 2, panelCentar.getSize().height / 5 * 2));
 		panelDodajObavestenje.setLocation(new Point(panelCentar.getSize().width / 2 - panelDodajObavestenje.getSize().width / 2, panelCentar.getSize().height / 2 - panelDodajObavestenje.getSize().height / 2 - 50));
-		panelDodajObavestenje.setBorder(BorderFactory.createLineBorder(Color.blue));
+		panelDodajObavestenje.setBorder(BorderFactory.createLineBorder(Color.black));
 		panelDodajObavestenje.setLayout(new BorderLayout());
 		area.setSize(panelDodajObavestenje.getSize().width, panelDodajObavestenje.getSize().height);
 		
@@ -160,7 +160,12 @@ public class DodajObavestenjeFrame extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
 		if(e.getSource() instanceof JButton) {
+			if(area.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "Greska kod unosa obavestenja!", "GRESKA", JOptionPane.WARNING_MESSAGE | JOptionPane.OK_OPTION);
+				return;
+			}
 			
 			if(this.obicnaPoruka.isSelected()) {
 				BazaPodataka.UPISI_OBAVESTENJE(area.getText(), "obicnaporuka");
@@ -169,6 +174,7 @@ public class DodajObavestenjeFrame extends JFrame implements ActionListener {
 			} else {
 				BazaPodataka.UPISI_OBAVESTENJE(area.getText(), "obavestenje");
 			}
+			
 			this.dispose();
 			
 			JOptionPane.showMessageDialog(null, "Uspesno dodato obavestenje!", "USPEH", JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE);

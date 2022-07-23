@@ -1,0 +1,2 @@
+INSERT INTO srbijavoz.rute (putovanje_pocetnalokacija, putovanje_krajnjalokacija, putovanje_vremekretanja, putovanje_vremedolaska, putovanje_cena, putovanje_trajanje) 
+	VALUES ("Sombor", "Novi Sad", "2022-07-05 04:15:00", "2022-07-05 06:55:00", 504, 160);

@@ -1,6 +1,5 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -30,11 +29,12 @@ public class MainWindow extends JFrame implements ActionListener {
 	
 	MainWindow(BazaPodataka.Korisnik korisnik) {
 		this.KORISNIK = korisnik;
+		
 		this.setTitle("Srbija Voz");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setAlwaysOnTop(false);
 		this.setResizable(false);
-		this.setIconImage(new ImageIcon("./slike//srbija.png").getImage());
+		this.setIconImage(new ImageIcon("SrbijaVoz\\slike\\srbija.png").getImage());
 		this.setLayout(new BorderLayout());
 		this.setSize(new Dimension(900, 700));
 		
@@ -105,7 +105,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	
 	public void DODAJ_OSTALE_STVARI(JPanel panelCentar, BazaPodataka.Korisnik korisnik) {
 		
-		JLabel label1 = new JLabel("<html> - Odlukom Vlade Republike Srbije 05 Broj 023-7361/2015 od 2. jula 2015. godine, osnovano je Akcionarsko društvo za železnièki prevoz putnika “Srbija Voz” Beograd, kao društvo sticalac dela imovine “Železnice Srbije” a.d. <br><br> - Društvo je upisano u registar Agencije za privredne registre, 10. avgusta 2015. godine, kada je steklo svojstvo pravnog lica i poèelo da posluje.</html>");
+		JLabel label1 = new JLabel("<html> - Odlukom Vlade Republike Srbije 05 Broj 023-7361/2015 od 2. jula 2015. godine, osnovano je Akcionarsko druï¿½tvo za ï¿½elezniï¿½ki prevoz putnika ï¿½Srbija Vozï¿½ Beograd, kao druï¿½tvo sticalac dela imovine ï¿½ï¿½eleznice Srbijeï¿½ a.d. <br><br> - Druï¿½tvo je upisano u registar Agencije za privredne registre, 10. avgusta 2015. godine, kada je steklo svojstvo pravnog lica i poï¿½elo da posluje.</html>");
 		label1.setFont(new Font("Times New Roman", Font.ITALIC, 16));
 		label1.setForeground(Color.white);
 		
@@ -148,7 +148,9 @@ public class MainWindow extends JFrame implements ActionListener {
 		
 		List<BazaPodataka.Obavestenje> iscitajObavestenja = BazaPodataka.ISPISI_OBAVESTENJA();
 		
-		for(BazaPodataka.Obavestenje s : iscitajObavestenja) {
+		for(int i = iscitajObavestenja.size() - 1; i >= Math.max(0, iscitajObavestenja.size() - 7); i--) {
+			BazaPodataka.Obavestenje s = iscitajObavestenja.get(i);
+			
 			if(s.urgentnost.equals("obicnaporuka")) {
 				DODAJ_OBAVESTENJE(s.obavestenje, URGENTNOST.OBICNA_PORUKA);
 			} else if(s.urgentnost.equals("vaznaporuka")) {
@@ -158,7 +160,7 @@ public class MainWindow extends JFrame implements ActionListener {
 			}
 		}
 		
-		JButton kupiKarte = napraviDugme("Kupi Karte"), listajKarte = napraviDugme("Listaj Karte"), brisiKarte = napraviDugme("Brisi Karte"), listajRute = napraviDugme("Listaj Rute");
+		JButton listajKarte = napraviDugme("Listaj Karte"), brisiKarte = napraviDugme("Brisi Karte"), listajRute = napraviDugme("Listaj Rute");
 		
 		JPanel panel3 = new JPanel();
 		panel3.setLocation(new Point(0, panelInformacije.getSize().height));
@@ -174,7 +176,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		panel4.setLayout(new GridLayout(4, 1, 30, 30));
 		panel4.setOpaque(false);
 		
-		panel4.add(kupiKarte);
 		panel4.add(brisiKarte);
 		panel4.add(listajKarte);
 		panel4.add(listajRute);
@@ -190,27 +191,18 @@ public class MainWindow extends JFrame implements ActionListener {
 
 	public static void DODAJ_OBAVESTENJE(String obavestenje, URGENTNOST urgentnost) {
 		
-		int brojac = 0;
-		
-		for(Component c : panel1.getComponents()) {
-			if(c instanceof JLabel) {
-				brojac++;
-			}
-		}
-		
-		JLabel label = new JLabel("<html>" + brojac + ". " + obavestenje + "</html>");
+		JLabel label = new JLabel("<html>" + obavestenje + "</html>");
 		label.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		label.setBackground(Color.decode("#1B2C36"));
-		label.setHorizontalAlignment(JLabel.LEFT);
 		
-		ImageIcon[] ikona = {new ImageIcon("./slike/megafon.png"), new ImageIcon("./slike/oblak.png"), new ImageIcon("./slike/uzvicnik.png")}; 
+		ImageIcon[] ikona = {new ImageIcon("SrbijaVoz\\slike\\megafon.png"), new ImageIcon("SrbijaVoz\\slike\\oblak.png"), new ImageIcon("SrbijaVoz\\slike\\uzvicnik.png")}; 
 		
 		Image image, newimage;
 		
 		switch(urgentnost) {
 			case OBAVESTENJE:
 				image = ikona[0].getImage();
-				newimage = image.getScaledInstance(42, 30, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+				newimage = image.getScaledInstance(42, 30, java.awt.Image.SCALE_SMOOTH);
 				ikona[0] = new ImageIcon(newimage);  
 				
 				label.setIcon(ikona[0]);
@@ -220,7 +212,7 @@ public class MainWindow extends JFrame implements ActionListener {
 			
 			case OBICNA_PORUKA:
 				image = ikona[1].getImage();
-				newimage = image.getScaledInstance(42, 30, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+				newimage = image.getScaledInstance(42, 30, java.awt.Image.SCALE_SMOOTH); 
 				ikona[1] = new ImageIcon(newimage);  
 				
 				label.setIcon(ikona[1]);
@@ -233,7 +225,7 @@ public class MainWindow extends JFrame implements ActionListener {
 			case VAZNA_PORUKA:
 				
 				image = ikona[2].getImage();
-				newimage = image.getScaledInstance(42, 30, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+				newimage = image.getScaledInstance(42, 30, java.awt.Image.SCALE_SMOOTH); 
 				ikona[2] = new ImageIcon(newimage);  
 				
 				label.setIcon(ikona[2]);
@@ -292,11 +284,6 @@ public class MainWindow extends JFrame implements ActionListener {
 			String naziv = ((JButton)e.getSource()).getName();
 			
 			switch(naziv) {
-				case "Kupi Karte":
-					this.dispose();
-					new KupiKarteFrame();
-				break;
-				
 				case "Brisi Karte":
 					this.dispose();
 					new BrisiKarteFrame();
@@ -304,12 +291,12 @@ public class MainWindow extends JFrame implements ActionListener {
 				
 				case "Listaj Karte":
 					this.dispose();
-					new ListajKarteFrame();
+					new ListajKarteFrame(KORISNIK);
 				break;
 				
 				case "Listaj Rute":
 					this.dispose();
-					new ListajRuteFrame();
+					new ListajRuteFrame(KORISNIK);
 				break;
 				
 				case "Dodaj Obavestenje":

@@ -31,7 +31,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setAlwaysOnTop(false);
 		this.setResizable(false);
-		this.setIconImage(new ImageIcon("./slike//srbija.png").getImage());
+		this.setIconImage(new ImageIcon("SrbijaVoz\\slike\\srbija.png").getImage());
 		this.setLayout(new BorderLayout());
 		this.setSize(new Dimension(700, 500));
 		this.setLocationRelativeTo(null);
@@ -102,8 +102,8 @@ public class LoginFrame extends JFrame implements ActionListener {
 		panelSredinaLogovanje.add(dugme1);
 		
 		panelSredinaLogovanje.setOpaque(false);
-		
-		JLabel labelBackground = new JLabel(new ImageIcon(new ImageIcon("./slike//slika1.jpg").getImage().getScaledInstance(panelCentar.getSize().width, panelCentar.getSize().height, Image.SCALE_SMOOTH)));
+
+		JLabel labelBackground = new JLabel(new ImageIcon(new ImageIcon("SrbijaVoz\\slike\\slika1.jpg").getImage().getScaledInstance(panelCentar.getSize().width, panelCentar.getSize().height, Image.SCALE_SMOOTH)));
 		labelBackground.setSize(panelCentar.getSize().width, panelCentar.getSize().height);
 		
 		panelCentar.add(panelSredinaLogovanje);
@@ -116,7 +116,6 @@ public class LoginFrame extends JFrame implements ActionListener {
 		this.getContentPane().add(panelDonji, BorderLayout.SOUTH);
 		this.getContentPane().add(panelCentar, BorderLayout.CENTER);
 		
-		
 		this.setVisible(true);
 	}
 	
@@ -128,7 +127,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 		
 		this.setVisible(false);
 		
-		if(korisnickoIme.isEmpty() || korisnickoIme.isEmpty()) {
+		if(korisnickoIme.isEmpty() || korisnickaSifra.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Greska! Upisite podatke!\n", "GRESKA", JOptionPane.WARNING_MESSAGE | JOptionPane.OK_OPTION);
 			this.setVisible(true);
 			return;
@@ -181,6 +180,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 				} else {
 					JOptionPane.showMessageDialog(null, "Uspesan unos!", "USPEH", JOptionPane.INFORMATION_MESSAGE | JOptionPane.OK_OPTION);
 					this.dispose();
+					
 					new MainWindow(new BazaPodataka.Korisnik(korisnickoIme, korisnickaSifra, "korisnik"));
 				}
 			}
